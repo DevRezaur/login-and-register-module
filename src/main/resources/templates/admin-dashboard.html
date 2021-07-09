@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="ISO-8859-1">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Admin Dashboard</title>
+		<link rel="stylesheet" type="text/css" href="/css/dashboard.css" />
+	</head>
+	<body class="container">
+		<h1>Welcome to Admin Panel</h1>
+		
+		<a class="btn-link" href="#" th:href="@{/admin/register}">Register New Admin</a>
+		<a class="btn-link" href="#" th:href="@{/logout}">Click Here to Logout</a>
+	</body>
+</html>

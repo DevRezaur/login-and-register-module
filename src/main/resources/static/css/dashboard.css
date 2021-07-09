@@ -1,0 +1,47 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	width: 100%;
+	overflow-x: hidden;
+}
+
+body {
+	width: 100%;
+	min-height: 100vh;
+}
+
+.container {
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 30px 15px;
+}
+
+h1 {
+	text-align: center;
+	margin: 30px 0 70px 0;
+}
+
+a {
+	text-decoration: none;
+}
+
+.btn-link {
+	display: block;
+	width: fit-content;
+	height: 32px;
+	background-color: black;
+	color: white;
+	border: 1px solid black;
+	margin: 16px auto;
+	padding: 5px 15px;
+}
+
+.btn-link:hover {
+	background-color: white;
+	color: black;
+}
