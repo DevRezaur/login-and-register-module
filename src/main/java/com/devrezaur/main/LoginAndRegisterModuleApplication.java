@@ -5,9 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class LoginAndRegisterModuleApplication {
-	
-	public static void main(String[] args) {
-		SpringApplication.run(LoginAndRegisterModuleApplication.class, args);
-	}
+
+    public static void main(String[] args) {
+        SpringApplication.run(LoginAndRegisterModuleApplication.class, args);
+    }
 
 }

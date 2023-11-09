@@ -1,20 +1,20 @@
-INSERT INTO roles
+INSERT INTO authority_table
 VALUES(1, 'ROLE_ADMIN');
 
-INSERT INTO roles
+INSERT INTO authority_table
 VALUES(2, 'ROLE_USER');
 
-INSERT INTO users (user_id, fullname, username, password)
-VALUES('101', 'Rezaur Rahman', 'DevRezaur', 'iamadmin');
+INSERT INTO user_table (user_id, first_name, last_name, username, password)
+VALUES(101L, 'Rezaur', 'Rahman', 'DevRezaur', 'iamadmin');
 
-INSERT INTO users (user_id, fullname, username, password)
-VALUES('102', 'Sanzida Sultana', 'SanzidaSultana', 'iamuser');
+INSERT INTO user_table (user_id, first_name, last_name, username, password)
+VALUES(102L, 'Sanzida', 'Sultana', 'SanzidaSultana', 'iamuser');
 
-INSERT INTO user_role
-VALUES('101', 1);
+INSERT INTO user_authority (user_id, authority_id)
+VALUES(101L, 1);
 
-INSERT INTO user_role
-VALUES('101', 2);
+INSERT INTO user_authority (user_id, authority_id)
+VALUES(101L, 2);
 
-INSERT INTO user_role
-VALUES('102', 2);
+INSERT INTO user_authority (user_id, authority_id)
+VALUES(102L, 2);

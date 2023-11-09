@@ -1,52 +1,63 @@
 package com.devrezaur.main.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.devrezaur.main.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import com.devrezaur.main.service.MyUserDetailsService;
+import org.springframework.security.web.SecurityFilterChain;
+
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 @Configuration
-@SuppressWarnings("deprecation")
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	
-	@Autowired
-	private MyUserDetailsService myUserDetailsService;
-	
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		return NoOpPasswordEncoder.getInstance();
-	}
+public class WebSecurityConfig {
 
+    private final CustomUserDetailsService customUserDetailsService;
 
-	@Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-                auth
-                    .userDetailsService(myUserDetailsService)
-                    .passwordEncoder(passwordEncoder());
+    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService) {
+        this.customUserDetailsService = customUserDetailsService;
     }
-	
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
-			.authorizeRequests()
-				.antMatchers("/static/**", "/css/**", "/templates/**", "/h2-console/**", "/auth/**").permitAll()
-				.antMatchers("/user/**").hasAuthority("ROLE_USER")
-				.antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-				.anyRequest().authenticated()
-				.and().formLogin()
-				.loginPage("/auth/login").failureUrl("/auth/login?error=true")
-				.defaultSuccessUrl("/auth/dashboard")
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .and().logout();
-		
-		http.csrf().disable();
-		http.headers().frameOptions().disable();
-	}
-	
+
+    @Bean
+    @SuppressWarnings("deprecation")
+    PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
+    }
+
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .csrf(AbstractHttpConfigurer::disable)
+                .headers(headerConfigurer -> headerConfigurer
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
+                )
+                .authorizeHttpRequests(requestConfigurer -> requestConfigurer
+                        .requestMatchers(antMatcher("/h2-console/**")).permitAll()
+                        .requestMatchers(antMatcher("/css/**")).permitAll()
+                        .requestMatchers(antMatcher("/login/**")).permitAll()
+                        .requestMatchers(antMatcher("/register/**")).permitAll()
+                        .requestMatchers(antMatcher("/user/register/**")).permitAll()
+                        .requestMatchers(antMatcher("/user/**")).hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                        .requestMatchers(antMatcher("/admin/**")).hasAuthority("ROLE_ADMIN")
+                        .anyRequest().fullyAuthenticated()
+                )
+                .formLogin(loginConfigurer -> loginConfigurer
+                        .loginPage("/login")
+                        .usernameParameter("username")
+                        .passwordParameter("password")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/dashboard", true)
+                        .failureUrl("/login?error=true")
+                )
+                .logout(logoutConfigurer -> logoutConfigurer
+                        .logoutUrl("/logout")
+                )
+                .userDetailsService(customUserDetailsService);
+
+        return httpSecurity.build();
+    }
+
 }
