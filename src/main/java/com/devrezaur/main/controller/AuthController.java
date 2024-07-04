@@ -27,7 +27,7 @@ public class AuthController {
             model.addAttribute("error", "Invalid credentials!");
         }
 
-        return "login.html";
+        return "login";
     }
 
     @GetMapping("/dashboard")
@@ -41,22 +41,22 @@ public class AuthController {
 
     @GetMapping("/user/dashboard")
     public String userDashboardPage() {
-        return "user-dashboard.html";
+        return "user-dashboard";
     }
 
     @GetMapping("/admin/dashboard")
     public String adminDashboardPage() {
-        return "admin-dashboard.html";
+        return "admin-dashboard";
     }
 
     @GetMapping("/user/register")
     public String userRegistrationPage() {
-        return "register-user.html";
+        return "register-user";
     }
 
     @GetMapping("/admin/register")
     public String adminRegistrationPage() {
-        return "register-admin.html";
+        return "register-admin";
     }
 
     @PostMapping("/user/register")
