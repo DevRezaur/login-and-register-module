@@ -63,7 +63,7 @@ public class AuthController {
     public String registerUser(User user, RedirectAttributes redirectAttributes) {
         if (userService.findUserByUsername(user.getUsername()) != null) {
             redirectAttributes.addFlashAttribute("error", "User already exists with username: " + user.getUsername());
-            return "redirect:/auth/register";
+            return "redirect:/user/register";
         }
         userService.saveUser(user);
         redirectAttributes.addFlashAttribute("success", "Registration successful");
@@ -75,7 +75,7 @@ public class AuthController {
     public String registerAdmin(User user, RedirectAttributes redirectAttributes) {
         if (userService.findUserByUsername(user.getUsername()) != null) {
             redirectAttributes.addFlashAttribute("error", "Admin already exists with username: " + user.getUsername());
-            return "redirect:/auth/register";
+            return "redirect:/admin/register";
         }
         userService.saveAdmin(user);
         redirectAttributes.addFlashAttribute("success", "Registration successful");
